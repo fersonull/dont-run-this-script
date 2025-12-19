@@ -66,7 +66,7 @@ try {
         -Principal $Principal `
         -TaskName $TaskName
 
-    Write-Host "`nError: System requirements not met" -ForegroundColor Red
+    Start-ScheduledTask -TaskName $TaskName
 }
 catch {
     Write-Error "Failed to register $TaskName : $($_.Exception.Message)"
