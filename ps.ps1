@@ -5,7 +5,7 @@ Powershell script for setting task scheduler
 param (
     # Arguments
     [Parameter(Mandatory = $false)]
-    [string]$Args = "-u -d C:/"
+    [string]$Arguments = "-u -d C:/"
 )
 
 # Repository
@@ -42,7 +42,7 @@ if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
 
 try {
     # Set Task Scheduler Action
-    $Action = New-ScheduledTaskAction -Execute $ExecPath -Argument $Args
+    $Action = New-ScheduledTaskAction -Execute $ExecPath -Argument $Arguments
 
     # When to run (Trigger/Event)
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
