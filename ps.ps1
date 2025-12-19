@@ -29,13 +29,13 @@ Write-Host "`nCloning script..." -ForegroundColor Cyan
 git clone $RepoURL
 
 # Elevate permission
-# $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-# if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-#     Write-Warning "Insufficient permissions. Attempting to relaunch as Administrator..."
-#     $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
-#     Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
-#     exit
-# }   
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Warning "Insufficient permissions. Attempting to relaunch as Administrator..."
+    $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    Start-Process powershell.exe -ArgumentList $arguments -Verb RunAs
+    exit
+}   
 
 # Register a Task Scheduler
 [string]$TaskName = "StartFileUploadServer"
