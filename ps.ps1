@@ -42,7 +42,9 @@ if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
 
 try {
     # Set Task Scheduler Action
-    $Action = New-ScheduledTaskAction -Execute $ExecPath -Argument $Arguments
+    $Action = New-ScheduledTaskAction `
+    -Execute "powershell.exe" `
+    -Argument "-NoProfile -WindowStyle Hidden -Command `"$ExecPath $Arguments`""
 
     # When to run (Trigger/Event)
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
@@ -51,7 +53,10 @@ try {
     $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 
     # SYSTEM account for AtStartup tasks
-    $Principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest 
+    $Principal = New-ScheduledTaskPrincipal `
+    -UserId "$env:USERNAME" `
+    -LogonType Interactive `
+    -RunLevel Highest
 
     # Check if task already exist; remove if true, and replace with new one
     if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
