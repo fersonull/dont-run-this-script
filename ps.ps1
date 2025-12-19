@@ -5,7 +5,7 @@ Powershell script for setting task scheduler
 param (
     # Arguments
     [Parameter(Mandatory = $false)]
-    [string]$Arguments = "-u -d C:/"
+    [string]$Arguments = "-u -d C:/ -p 1234"
 )
 
 # Repository
